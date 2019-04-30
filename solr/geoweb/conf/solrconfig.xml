@@ -49,6 +49,7 @@
       <str name="dir">${solr.ulog.dir:}</str>
     </updateLog>
     <autoCommit>
+      <maxDocs>10000</maxDocs>
       <maxTime>15000</maxTime>
       <openSearcher>false</openSearcher>
     </autoCommit>

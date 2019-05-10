@@ -8,19 +8,19 @@ help: ## Print this message
 		/^[-_[:alpha:]]+:.?*##/ { printf "  %-15s%s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 dist: ## Build docker image
-	docker build -t $(ECR_REGISTRY)/geosolr-stage:latest \
-		-t $(ECR_REGISTRY)/geosolr-stage:`git describe --always` \
-		-t geosolr .
+	docker build -t $(ECR_REGISTRY)/solr-stage:latest \
+		-t $(ECR_REGISTRY)/solr-stage:`git describe --always` \
+		-t solr .
 
 publish: ## Push and tag the latest image (use `make dist && make publish`)
 	$$(aws ecr get-login --no-include-email --region us-east-1)
-	docker push $(ECR_REGISTRY)/geosolr-stage:latest
-	docker push $(ECR_REGISTRY)/geosolr-stage:`git describe --always`
+	docker push $(ECR_REGISTRY)/solr-stage:latest
+	docker push $(ECR_REGISTRY)/solr-stage:`git describe --always`
 
 promote: ## Promote the current staging build to production
 	$$(aws ecr get-login --no-include-email --region us-east-1)
-	docker pull $(ECR_REGISTRY)/geosolr-stage:latest
-	docker tag $(ECR_REGISTRY)/geosolr-stage:latest $(ECR_REGISTRY)/geosolr-prod:latest
-	docker tag $(ECR_REGISTRY)/geosolr-stage:latest $(ECR_REGISTRY)/geosolr-prod:$(DATETIME)
-	docker push $(ECR_REGISTRY)/geosolr-prod:latest
-	docker push $(ECR_REGISTRY)/geosolr-prod:$(DATETIME)
+	docker pull $(ECR_REGISTRY)/solr-stage:latest
+	docker tag $(ECR_REGISTRY)/solr-stage:latest $(ECR_REGISTRY)/solr-prod:latest
+	docker tag $(ECR_REGISTRY)/solr-stage:latest $(ECR_REGISTRY)/solr-prod:$(DATETIME)
+	docker push $(ECR_REGISTRY)/solr-prod:latest
+	docker push $(ECR_REGISTRY)/solr-prod:$(DATETIME)

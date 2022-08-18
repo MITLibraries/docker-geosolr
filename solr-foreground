@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Run the initdb, then start solr in the foreground
+set -e
+
+if [[ "$VERBOSE" == "yes" ]]; then
+    set -x
+fi
+
+# init script for handling an empty /var/solr
+/opt/docker-solr/scripts/init-var-solr
+
+# init script for handling initial setup of empty /var/solr/geoweb
+if [ ! -f "${GEOWEB_HOME}/core.properties" ]; then
+    echo "No GeoWeb core.properties file, so copying in a fresh Geoweb setup"
+    cp -pR /var/geoweb/ "${GEOWEB_HOME}"
+fi
+
+. /opt/docker-solr/scripts/run-initdb
+
+exec solr-fg "$@"

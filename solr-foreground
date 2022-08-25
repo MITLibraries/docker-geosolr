@@ -13,7 +13,7 @@ fi
 # init script for handling initial setup of empty /var/solr/geoweb
 if [ ! -f "${GEOWEB_HOME}/core.properties" ]; then
     echo "No GeoWeb core.properties file, so copying in a fresh Geoweb setup"
-    cp -pR /var/geoweb/ "${GEOWEB_HOME}"
+    cp -pR /opt/solr/server/geoweb "${GEOWEB_HOME}"
 fi
 
 . /opt/docker-solr/scripts/run-initdb
